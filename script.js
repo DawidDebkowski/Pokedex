@@ -19,14 +19,25 @@ function loadPokemons() {
             return resp.json();
         })
         .then(function (json) {
-            const listaPokemonow = json.resultrs;
-            const listaHtmliPokemonow = listaPokemonow.map(
-                function (pokemon) { return buildPokemon(pokemon.name); })
-            const htmlWszystkichPokemonow = listaHtmliPokemonow.join();
-            document.querySelector("#pokemony").innerHTML = htmlWszystkichPokemonow
+            let listaPokemonow = json.results;
+            let requesty = listaPokoemonow.map(
+                (pokemon) => {
+                    return fetch(pokemon.url)
+                        .then(function (resp) {
+                            return resp.json()
+                        })
+                }
+            )
+            Promise.all(requesty).then(function (pokemony) {
+                const listaHtmliPokemonow = listaPokemonow
+                    .map((pokemon) => buildPokomen(pokemon.name))
+                const htmlWszystkichPokemonow = listaHtmliPokemonow.join("");
+                document.querySelector("#pokemon").innerHTML = htmlWszystkichPokemonow
+            })
         })
         .catch(function (err) {
             console.error(err)
         })
 }
 document.addEventListener("load", loadPokemons)
+loadPokemons()
