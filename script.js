@@ -1,38 +1,39 @@
 const api = 'http://pokeapi.co/api/v2'
 
-function buildPokemon(name) {
+function buildPokemon(pokemon) {
     return `
     <div id = "pokedex"><div class = "pokemon row"> 
     <img src = "" class = "img">
     <div class = "col">
-        <span class = "text"> ${name} </span>
-        <span class = "text "> TYP </span>
-        <span class = "text"> WAGA </span>
+        <span class = "text"> ${pokemon.name} </span>
+        <span class = "text "> ${pokemon.types.type[0]} </span>
+        <span class = "text"> ${pokemon.weight} </span>
     </div>
 </div>
 </div>"
 `
 }
 function loadPokemons() {
-    fetch(api + "/pokemon")
-        .then(function (resp) {
+    const pro = fetch(api + "/pokemon")
+        pro.then(function (resp) {
             return resp.json();
         })
         .then(function (json) {
             let listaPokemonow = json.results;
-            let requesty = listaPokoemonow.map(
+            let requesty = listaPokemonow.map(
                 (pokemon) => {
                     return fetch(pokemon.url)
                         .then(function (resp) {
                             return resp.json()
                         })
                 }
-            )
+           )
             Promise.all(requesty).then(function (pokemony) {
-                const listaHtmliPokemonow = listaPokemonow
-                    .map((pokemon) => buildPokomen(pokemon.name))
+                const listaHtmliPokemonow = pokemony
+                    .map((pokemon) => buildPokemon(pokemon))
                 const htmlWszystkichPokemonow = listaHtmliPokemonow.join("");
-                document.querySelector("#pokemon").innerHTML = htmlWszystkichPokemonow
+                document.querySelector("#pokemony").innerHTML = htmlWszystkichPokemonow
+                console.log(pokemony)
             })
         })
         .catch(function (err) {
