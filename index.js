@@ -1,13 +1,15 @@
 const api = 'https://pokeapi.co/api/v2'
 
 function renderPokemon(pokemon) {
+	let waga = (pokemon.weight / 10) > 70 ? "Zmień dietę" : "Może być";
 	return `
 		<div class = "row pokemon">
 			<img src="${pokemon.sprites.front_default}">
 			<div class="col">
 				<span>${pokemon.name}</span>
-				<span>type: ${pokemon.types.map(type => type.type.name).join(",")}</span>
-				<span>weight: ${pokemon.weight / 10} kg</span>
+				<span>Type: ${pokemon.types.map(type => type.type.name).join(",")}</span>
+				<span>Weight: ${pokemon.weight / 10} kg</span>
+				<span>Ocena dietetyka: ${waga}</span>
 			</div>
 		</div>
 	`
@@ -15,7 +17,7 @@ function renderPokemon(pokemon) {
 
 function loadPokemons(pageNumber) {
 	if (typeof pageNumber === "undefined") pageNumber = 0;
-	const pro = fetch(api + "/pokemon?limit=10offset=" + 10 * pageNumber); // Promise
+	const pro = fetch(api + "/pokemon?limit=10&offset=" + 10 * pageNumber); // Promise
 	pro.then(function (resp) {
 		return resp.json();
 	})
@@ -40,8 +42,10 @@ function loadPokemons(pageNumber) {
 		.catch(function (err) {
 			console.error(err)
 		})
+
 }
 let pageNumber = 0;
+
 function init() {
 	document.querySelector("#next").addEventListener("click", e => {
 		pageNumber++;
@@ -53,5 +57,8 @@ function init() {
 	})
 }
 
+function sortPokemons(){
+	
+}
 window.addEventListener("load", init)
 //document.addEventListener("load",loadPokemons)
