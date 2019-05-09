@@ -32,6 +32,18 @@ function loadPokemons(pageNumber) {
 				}
 			)
 			Promise.all(requesty).then(function (pokemony) {
+				const porownaj = function (a,b){
+					if (a.weight < b.weight) {
+						return -1;
+					}
+					else if (a.weight = b.weight) {
+						return 0;
+					}
+					else {
+						return 1;
+					}
+				}
+				pokemony.sort(porownaj);
 				const listaHtmliPokemonow = pokemony
 					.map((pokemon) => renderPokemon(pokemon))
 				const htmlWszystkichPokemonow = listaHtmliPokemonow.join(""); // ""
@@ -56,9 +68,13 @@ function init() {
 		loadPokemons(pageNumber);
 	})
 }
-
-function sortPokemons(){
-	
+function comparePokemons(a,b){
+	if (a.pokemon.weight > b.pokemon.weight) {
+		return 1
+	}
+	else if (a.pokemon.weight = b.pokemon.weight) {
+		return 0
+	}
 }
 window.addEventListener("load", init)
 //document.addEventListener("load",loadPokemons)
